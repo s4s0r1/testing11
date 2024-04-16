@@ -6,7 +6,8 @@ const firebaseConfig = {
         storageBucket: "broadcastnotification-80fd9.appspot.com",
         messagingSenderId: "1001002027993",
         appId: "1:1001002027993:web:07d83621b8ea73b19967c8",
-        measurementId: "G-G2C0KXVS09"};
+        measurementId: "G-G2C0KXVS09"
+};
 
 // Inisialisasi Firebase app
 const app = firebase.initializeApp(firebaseConfig);
