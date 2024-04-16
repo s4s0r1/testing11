@@ -15,6 +15,11 @@ const app = firebase.initializeApp(firebaseConfig);
 // Inisialisasi Firebase Cloud Messaging dan dapatkan referensi layanan
 const messaging = firebase.messaging();
 
+// Minta izin notifikasi secara otomatis saat halaman dimuat
+window.onload = function() {
+    requestPermission();
+};
+
 // Minta izin notifikasi
 function requestPermission() {
     if ('Notification' in window) {
