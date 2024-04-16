@@ -1,12 +1,12 @@
 // Firebase project configuration
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
+    apiKey: "AIzaSyCvSb4Z09Cb6GgN-oCI05tsTpA8oWlbLCo",
+    authDomain: "broadcastnotification-80fd9.firebaseapp.com",
+    projectId: "broadcastnotification-80fd9",
+    storageBucket: "broadcastnotification-80fd9.appspot.com",
+    messagingSenderId: "1001002027993",
+    appId: "1:1001002027993:web:07d83621b8ea73b19967c8",
+    measurementId: "G-G2C0KXVS09"
 };
 
 // Function to request notification permission
