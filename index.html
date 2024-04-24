@@ -5,10 +5,41 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FCM</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .subscribe-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .subscribe-button.disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        .subscribe-button:hover:not(.disabled) {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body>
     <h1>Firebase Push Notification</h1>
+    <button id="subscribeButton" class="subscribe-button">Subscribe</button> <!-- Subscribe button -->
     <div id="token"></div> <!-- This is where the token will be displayed -->
     <script type="module">
         // Import the functions you need from the SDKs you need
@@ -33,22 +64,50 @@
         const app = initializeApp(firebaseConfig);
         const messaging = getMessaging(app);
 
-        navigator.serviceWorker.register("sw.js").then(registration => {
-            getToken(messaging, {
-                serviceWorkerRegistration: registration,
-                vapidKey: 'BNQ_NyOMsyNwSdxUHI5oTqEiFvRMT0C9ksrwEBLzvn8CH7t25ODykc_SUFTyZIx9UGA1WqGYXjTPTnIiyEqQO70'
-            }).then((currentToken) => {
-                if (currentToken) {
-                    console.log("Token is: " + currentToken);
-                    // Display the token in the 'token' div
-                    document.getElementById('token').innerText = "Token is: " + currentToken;
+        // Function to request permission for notifications
+        function requestNotificationPermission() {
+            Notification.requestPermission().then((permission) => {
+                if (permission === 'granted') {
+                    console.log('Notification permission granted.');
+                    // Get the token after permission is granted
+                    getTokenAfterPermission();
+                    // Disable the button after permission is granted
+                    document.getElementById('subscribeButton').classList.add('disabled');
                 } else {
-                    // Show permission request UI
-                    console.log('No registration token available. Request permission to generate one.');
+                    console.log('Unable to get permission to notify.');
                 }
-            }).catch((err) => {
-                console.log('An error occurred while retrieving token. ', err);
             });
+        }
+
+        // Function to get token after permission is granted
+        function getTokenAfterPermission() {
+            navigator.serviceWorker.register("sw.js").then(registration => {
+                getToken(messaging, {
+                    serviceWorkerRegistration: registration,
+                    vapidKey: 'BNQ_NyOMsyNwSdxUHI5oTqEiFvRMT0C9ksrwEBLzvn8CH7t25ODykc_SUFTyZIx9UGA1WqGYXjTPTnIiyEqQO70'
+                }).then((currentToken) => {
+                    if (currentToken) {
+                        console.log("Token is: " + currentToken);
+                        // Display the token in the 'token' div
+                        document.getElementById('token').innerText = "Token is: " + currentToken;
+                    } else {
+                        // Show permission request UI
+                        console.log('No registration token available. Request permission to generate one.');
+                    }
+                }).catch((err) => {
+                    console.log('An error occurred while retrieving token. ', err);
+                });
+            });
+        }
+
+        // Event listener for subscribe button
+        document.getElementById('subscribeButton').addEventListener('click', () => {
+            requestNotificationPermission();
+        });
+
+        // Automatically ask for permission when page loads
+        window.addEventListener('load', () => {
+            requestNotificationPermission();
         });
     </script>
 </body>
